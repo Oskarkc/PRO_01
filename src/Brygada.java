@@ -21,4 +21,5 @@ public class Brygada {
     public List<Pracownik> getPracownicy() {
         return pracownicy;
     }
+    String k;
 }
