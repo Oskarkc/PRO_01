@@ -24,6 +24,5 @@ public class Zlecenie<T> {
    }
 public void DodajPrace(Collection<T> praca){
        this.prace.addAll(praca);
-       String lala;
 }
 }

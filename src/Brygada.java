@@ -22,4 +22,5 @@ public class Brygada {
         return pracownicy;
     }
     String k;
+    int y;
 }
