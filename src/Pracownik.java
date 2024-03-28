@@ -15,6 +15,7 @@ abstract class Pracownik{
         this.birthdate=birth;
         this.dzial=dzial;
         listapracownikow.add(this);
+        dzial.getListaPracownikow().add(this);
     }
 
     @Override

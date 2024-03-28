@@ -19,8 +19,10 @@ public class Main {
         brygada1.DodajDoBrygady(lista);
         System.out.println(brygada1.getPracownicy());
         System.out.println(ferdek.ListaBrygad);
-        Zlecenie nowe = new Zlecenie<>(true);
+        Zlecenie nowe = new Zlecenie(true);
        System.out.println(nowe.getDataUtworzenia());
+        //System.out.println(nowy.getListaPracownikow());
+        System.out.println(Pracownik.listapracownikow);
     }
 
 }

@@ -9,7 +9,6 @@ public class Uzytkownik extends Pracownik{
         this.login=login;
         this.haslo=haslo;
         this.Init+=name.charAt(0)+surrname.charAt(0);
-        listapracownikow.add(this);
     }
 
     @Override

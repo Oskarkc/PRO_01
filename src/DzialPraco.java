@@ -6,10 +6,12 @@ import java.util.List;
 public class DzialPraco {
     private String nazwa;
     private static List<String> dzialy =  new ArrayList<>();
+    private List<Pracownik> listaPracownikow;
     private DzialPraco(String nazwa) throws NotUniqueNameException{
         if(Isnameunique(nazwa)) throw new NotUniqueNameException();
         this.nazwa=nazwa;
         dzialy.add(nazwa);
+        listaPracownikow=new ArrayList<>();
         System.out.println("Dzial stworzony pomyslnie");
 
     }
@@ -27,5 +29,9 @@ public class DzialPraco {
 
     public String getNazwa() {
         return nazwa;
+    }
+
+    public List<Pracownik> getListaPracownikow() {
+        return listaPracownikow;
     }
 }
