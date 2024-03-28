@@ -6,7 +6,7 @@ import java.util.List;
 public class DzialPraco {
     private String nazwa;
     private static List<String> dzialy =  new ArrayList<>();
-    public DzialPraco(String nazwa) throws NotUniqueNameException{
+    private DzialPraco(String nazwa) throws NotUniqueNameException{
         if(Isnameunique(nazwa)) throw new NotUniqueNameException();
         this.nazwa=nazwa;
         dzialy.add(nazwa);
