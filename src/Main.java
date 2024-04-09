@@ -23,7 +23,6 @@ public class Main {
        System.out.println(nowe.getDataUtworzenia());
         //System.out.println(nowy.getListaPracownikow());
         System.out.println(Pracownik.listapracownikow);
-        System.out.println("siema");
     }
 
 }
