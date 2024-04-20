@@ -12,7 +12,7 @@ public class Main {
         Uzytkownik kekw = new Uzytkownik("kekw","Bonk","31.12.2002",nowy,"maciek123","maciek123");
         Brygadzista ferdek = new Brygadzista("Franek","bogadnowicz","31.12.2002",nowy,"siemano","siemano");
         Brygada brygada1 = new Brygada("Alpha",ferdek);
-        brygada1.DodajDoBrygady(marcin);
+        brygada1.DodajDoBrygady(ferdek);
         List<Pracownik> lista = new ArrayList<>();
         lista.add(fran);
         lista.add(kekw);
@@ -21,8 +21,10 @@ public class Main {
         System.out.println(ferdek.ListaBrygad);
         Zlecenie nowe = new Zlecenie(true);
        System.out.println(nowe.getDataUtworzenia());
-        //System.out.println(nowy.getListaPracownikow());
+        System.out.println(nowy.getListaPracownikow());
         System.out.println(Pracownik.listapracownikow);
+        nowe.dodajbrygade(brygada1);
+        nowe.dodajbrygade(brygada1);
     }
 
 }
