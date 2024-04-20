@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Brygadzista extends Uzytkownik{
     List<String> ListaBrygad = new ArrayList<>();
+    List<Zlecenie> historiaZlecenBrygadzisty = new ArrayList<>();
 
     public Brygadzista(String name, String surrname, String birth, DzialPraco dzial, String login, String haslo) {
         super(name, surrname, birth, dzial, login, haslo);

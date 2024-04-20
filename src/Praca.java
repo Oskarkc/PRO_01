@@ -1,15 +1,24 @@
 import java.util.Collections;
+import java.util.List;
 
-public class Praca extends Thread{
+public class Praca extends Thread {
     private static int counter=1;
-    private int numerPracy;
+    private String numerPracy;
     private RodzajPracy rodzajPracy;
     private int Czaspracy;
     private boolean Isdone;
     private String opis;
-    private Collections praca;
+    private List<Praca> praca;
+    public Praca(RodzajPracy rodzajPracy, int czaspracy, boolean isdone, String opis, List<Praca> praca) {
+        this.numerPracy = setNrPracy();
+        this.rodzajPracy = rodzajPracy;
+        Czaspracy = czaspracy;
+        Isdone = isdone;
+        this.opis = opis;
+        this.praca = praca;
+    }
 
-private void setNrPracy(){
-    this.numerPracy=counter++;
+private String setNrPracy(){
+    return  "#P"+counter++;
 }
 }
