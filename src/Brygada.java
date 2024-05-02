@@ -32,4 +32,8 @@ public class Brygada {
         return pracownicy;
     }
 
+    @Override
+    public String toString() {
+        return this.nazwa;
+    }
 }

@@ -8,12 +8,13 @@ public class Uzytkownik extends Pracownik{
         super(name, surrname, birth, dzial);
         this.login=login;
         this.haslo=haslo;
-        this.Init+=name.charAt(0)+surrname.charAt(0);
+        this.Init+=name.charAt(0);
+        this.Init+=surrname.charAt(0);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString()+ " " + this.Init;
     }
 
     @Override
@@ -25,13 +26,19 @@ public class Uzytkownik extends Pracownik{
     public void setName(String name) {
         super.setName(name);
         this.Init="";
-        this.Init+=name.charAt(0)+getSurrname().charAt(0);
+        this.Init+=name.charAt(0);
+        this.Init+=getSurrname().charAt(0);
     }
 
     @Override
     public void setSurrname(String surrname) {
         super.setSurrname(surrname);
         this.Init="";
-        this.Init+=getName().charAt(0)+surrname.charAt(0);
+        this.Init+=getName().charAt(0);
+        this.Init+=surrname.charAt(0);
+    }
+
+    public String getInit() {
+        return (String)Init;
     }
 }

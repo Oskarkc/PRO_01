@@ -34,4 +34,11 @@ public class DzialPraco {
     public List<Pracownik> getListaPracownikow() {
         return listaPracownikow;
     }
+
+    @Override
+    public String toString() {
+        return "DzialPraco{" +
+                "nazwa='" + nazwa + '\'' +
+                '}';
+    }
 }

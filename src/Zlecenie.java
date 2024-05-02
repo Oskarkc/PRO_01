@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class Zlecenie implements Runnable {
     private static int zlecenie=1;
     final private String numerzlecenia;
@@ -12,34 +14,36 @@ public class Zlecenie implements Runnable {
     private LocalDateTime DataUtworzenia;
     private LocalDateTime dataRozpoczecia;
     private LocalDateTime dataZakonczenia;
-    final private boolean IsPlanned;
+    final private Rodzajzlecenia IsPlanned;
     private Brygada brygada;
     private List<Praca> prace;
    public Zlecenie(boolean IsPlanned){
        this.currentstatus=Status.UTWORZONE;
-       this.IsPlanned=IsPlanned;
+       this.DataUtworzenia=LocalDateTime.now();
+       this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.numerzlecenia=SetNrZlecenia();
-       this.prace=new ArrayList<>();
     }
     public Zlecenie(boolean IsPlanned, Brygada brygada){
        this.currentstatus=Status.UTWORZONE;
-       this.IsPlanned=IsPlanned;
+        this.DataUtworzenia=LocalDateTime.now();
+       this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.brygada=brygada;
        this.numerzlecenia=SetNrZlecenia();
-        this.prace=new ArrayList<>();
        brygada.brygadzista.historiaZlecenBrygadzisty.add(this);
    }
    public Zlecenie(boolean IsPlanned,List<Praca> prace) {
        this.currentstatus=Status.UTWORZONE;
-       this.IsPlanned=IsPlanned;
+       this.DataUtworzenia=LocalDateTime.now();
+       this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.prace=prace;
        this.numerzlecenia=SetNrZlecenia();
    }
    public Zlecenie(boolean IsPlanned, Brygada brygada, List<Praca> prace){
        this.currentstatus=Status.UTWORZONE;
-   this.IsPlanned=IsPlanned;
+       this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
+       this.DataUtworzenia=LocalDateTime.now();
    this.brygada=brygada;
-   this.prace.addAll(prace);
+   this.prace=prace;
    this.numerzlecenia=SetNrZlecenia();
    brygada.brygadzista.historiaZlecenBrygadzisty.add(this);
    }
@@ -68,11 +72,26 @@ public void DodajPrace(Praca praca){
 
     @Override
     public String toString() {
-        return numerzlecenia;
+        return numerzlecenia +" "+this.currentstatus;
     }
 
     @Override
     public void run() {
+       if(this.brygada==null || prace==null) throw new ZlecenieError();
+           this.dataRozpoczecia = LocalDateTime.now();
+           for (int i = 0; i < prace.size(); i++) {
+               synchronized (prace) {
+                   prace.get(i).start();
+                   try {
+                       sleep(prace.get(i).Czaspracy);
+                   } catch (InterruptedException e) {
+                       throw new RuntimeException(e);
+                   }
+                   prace.get(i).interrupt();
+               }
+           }
+           System.out.println("Zlecenie wykonane");
+           this.dataZakonczenia = LocalDateTime.now();
 
     }
 }

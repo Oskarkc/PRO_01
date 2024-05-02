@@ -15,4 +15,7 @@ public class Brygadzista extends Uzytkownik{
     public String toString() {
         return super.toString();
     }
+    public void jakabrygada(Brygadzista b){
+        System.out.println(b.ListaBrygad);
+    }
 }

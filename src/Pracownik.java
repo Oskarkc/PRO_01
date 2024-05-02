@@ -20,7 +20,7 @@ abstract class Pracownik{
 
     @Override
     public String toString() {
-        return this.name + " " + this.surrname;
+        return this.name + " " + this.surrname + this.dzial;
     }
 
     public String getName() {
