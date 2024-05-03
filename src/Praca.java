@@ -1,5 +1,7 @@
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Praca extends Thread {
     private static int counter=1;
@@ -9,18 +11,13 @@ public class Praca extends Thread {
     private boolean Isdone;
     private String opis;
     private List<Praca> praca;
+    private static Map<String,Praca> mapa = new HashMap<>();
     public Praca(RodzajPracy rodzajPracy, int czaspracy, String opis) {
         this.numerPracy = setNrPracy();
         this.rodzajPracy = rodzajPracy;
         Czaspracy = czaspracy;
         this.opis = opis;
-    }
-    public Praca(RodzajPracy rodzajPracy, int czaspracy, boolean isdone, String opis) {
-        this.numerPracy = setNrPracy();
-        this.rodzajPracy = rodzajPracy;
-        Czaspracy = czaspracy;
-        Isdone = isdone;
-        this.opis = opis;
+        mapa.put(numerPracy,this);
     }
 
 private String setNrPracy(){
@@ -46,6 +43,9 @@ private String setNrPracy(){
 
     @Override
     public String toString() {
-        return this.numerPracy+ " " + this.rodzajPracy+ " " + this.Isdone+ " "+ this.Czaspracy + " " + this.opis;
+        return this.numerPracy+ " Rodzaj: " + this.rodzajPracy+ " Czy skonczona: " + this.Isdone+ " Czas pracy: "+ (this.Czaspracy/1000) + "sek. Opis: " + this.opis;
+    }
+    public static Praca getmapa(String numerPracy) {
+        return mapa.get(numerPracy);
     }
 }

@@ -1,10 +1,11 @@
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Uzytkownik extends Pracownik{
     private String login;
     private String haslo;
     private String Init="";
-    public Uzytkownik(String name, String surrname, String birth, DzialPraco dzial,String login, String haslo) {
+    public Uzytkownik(String name, String surrname, LocalDate birth, DzialPraco dzial, String login, String haslo) {
         super(name, surrname, birth, dzial);
         this.login=login;
         this.haslo=haslo;
@@ -21,7 +22,6 @@ public class Uzytkownik extends Pracownik{
     public String getName() {
         return super.getName();
     }
-
     @Override
     public void setName(String name) {
         super.setName(name);
@@ -40,5 +40,10 @@ public class Uzytkownik extends Pracownik{
 
     public String getInit() {
         return (String)Init;
+    }
+
+    @Override
+    public int getID() {
+        return super.getID();
     }
 }

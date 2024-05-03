@@ -1,9 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Thread.sleep;
 
@@ -11,17 +8,19 @@ public class Zlecenie implements Runnable {
     private static int zlecenie=1;
     final private String numerzlecenia;
     private Status currentstatus;
-    private LocalDateTime DataUtworzenia;
+    final private LocalDateTime DataUtworzenia;
     private LocalDateTime dataRozpoczecia;
     private LocalDateTime dataZakonczenia;
     final private Rodzajzlecenia IsPlanned;
     private Brygada brygada;
     private List<Praca> prace;
+    private static Map<String,Zlecenie> mapa = new HashMap<>();
    public Zlecenie(boolean IsPlanned){
        this.currentstatus=Status.UTWORZONE;
        this.DataUtworzenia=LocalDateTime.now();
        this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.numerzlecenia=SetNrZlecenia();
+       mapa.put(numerzlecenia,this);
     }
     public Zlecenie(boolean IsPlanned, Brygada brygada){
        this.currentstatus=Status.UTWORZONE;
@@ -29,6 +28,7 @@ public class Zlecenie implements Runnable {
        this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.brygada=brygada;
        this.numerzlecenia=SetNrZlecenia();
+       mapa.put(numerzlecenia,this);
        brygada.brygadzista.historiaZlecenBrygadzisty.add(this);
    }
    public Zlecenie(boolean IsPlanned,List<Praca> prace) {
@@ -37,6 +37,7 @@ public class Zlecenie implements Runnable {
        this.IsPlanned=IsPlanned?Rodzajzlecenia.PLANOWANE:Rodzajzlecenia.NIEPLANOWANE;
        this.prace=prace;
        this.numerzlecenia=SetNrZlecenia();
+       mapa.put(numerzlecenia,this);
    }
    public Zlecenie(boolean IsPlanned, Brygada brygada, List<Praca> prace){
        this.currentstatus=Status.UTWORZONE;
@@ -45,6 +46,7 @@ public class Zlecenie implements Runnable {
    this.brygada=brygada;
    this.prace=prace;
    this.numerzlecenia=SetNrZlecenia();
+       mapa.put(numerzlecenia,this);
    brygada.brygadzista.historiaZlecenBrygadzisty.add(this);
    }
 public void DodajPrace(Praca praca){
@@ -72,26 +74,45 @@ public void DodajPrace(Praca praca){
 
     @Override
     public String toString() {
-        return numerzlecenia +" "+this.currentstatus;
+        return numerzlecenia +" Status: "+this.currentstatus;
     }
 
     @Override
     public void run() {
-       if(this.brygada==null || prace==null) throw new ZlecenieError();
-           this.dataRozpoczecia = LocalDateTime.now();
+       if(this.brygada==null || prace==null) {throw new ZlecenieError();}
+
+       this.dataRozpoczecia = LocalDateTime.now();
+           currentstatus = Status.ROZPOCZETE;
+        System.out.println("Zlecenie: "+numerzlecenia +" rozpoczete o godz "+this.dataRozpoczecia);
            for (int i = 0; i < prace.size(); i++) {
-               synchronized (prace) {
-                   prace.get(i).start();
+               prace.get(i).start();
                    try {
                        sleep(prace.get(i).Czaspracy);
                    } catch (InterruptedException e) {
                        throw new RuntimeException(e);
                    }
                    prace.get(i).interrupt();
+               try {
+                   sleep(1000);
+               } catch (InterruptedException e) {
+                   throw new RuntimeException(e);
                }
-           }
-           System.out.println("Zlecenie wykonane");
-           this.dataZakonczenia = LocalDateTime.now();
 
+           }
+           this.dataZakonczenia = LocalDateTime.now();
+           currentstatus = Status.ZAKONCZONE;
+           System.out.println("Zlecenie: "+numerzlecenia+" wykonane o godz "+this.dataZakonczenia);
+
+    }
+
+    public LocalDateTime getDataRozpoczecia() {
+        return dataRozpoczecia;
+    }
+    public LocalDateTime getDataZakonczenia() {
+       return dataZakonczenia;
+    }
+
+    public static Zlecenie getMapa(String s) {
+        return mapa.get(s);
     }
 }

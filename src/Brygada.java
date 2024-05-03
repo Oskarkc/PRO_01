@@ -12,7 +12,7 @@ public class Brygada {
         brygadzista.ListaBrygad.add(this.nazwa);
     }
     public void DodajDoBrygady(Pracownik a){
-        if(a instanceof Uzytkownik){
+        if(a.getClass().equals(Uzytkownik.class)){
             System.out.println("Nie mozna dodac "+a+" do brygady");
         }else {
             this.pracownicy.add(a);
@@ -20,7 +20,7 @@ public class Brygada {
         }
     }
     public void DodajDoBrygady(List<Pracownik> a){
-        if(a.stream().anyMatch(e -> e instanceof Uzytkownik)){
+        if(a.stream().anyMatch(e -> e.getClass().equals(Uzytkownik.class))){
             System.out.println("Nie mozna dodac listy pracownikow do brygady, w liscie znajduje obiekt klasy Uzytkownik!");
         }else {
             this.pracownicy.addAll(a);
@@ -34,6 +34,6 @@ public class Brygada {
 
     @Override
     public String toString() {
-        return this.nazwa;
+        return this.nazwa + " " + this.brygadzista;
     }
 }
