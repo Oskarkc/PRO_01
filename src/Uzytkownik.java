@@ -1,27 +1,36 @@
-import java.time.LocalDate;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Uzytkownik extends Pracownik{
+public class Uzytkownik extends Pracownik implements Serializable {
     private String login;
     private String haslo;
     private String Init="";
-    public Uzytkownik(String name, String surrname, LocalDate birth, DzialPraco dzial, String login, String haslo) {
+
+    public Uzytkownik(){
+        readFromFile();
+    }
+
+    public Uzytkownik(String name, String surrname, String birth, DzialPraco dzial,String login, String haslo) {
         super(name, surrname, birth, dzial);
         this.login=login;
         this.haslo=haslo;
         this.Init+=name.charAt(0);
         this.Init+=surrname.charAt(0);
+        saveToFile();
     }
 
     @Override
     public String toString() {
-        return super.toString()+ " " + this.Init;
+        return super.toString();
     }
 
     @Override
     public String getName() {
         return super.getName();
     }
+
     @Override
     public void setName(String name) {
         super.setName(name);
@@ -42,8 +51,34 @@ public class Uzytkownik extends Pracownik{
         return (String)Init;
     }
 
-    @Override
-    public int getID() {
-        return super.getID();
+    public String getLogin() {
+        return login;
+    }
+    public String getHaslo() {
+        return haslo;
+    }
+
+    public void setHaslo(String haslo) {
+        this.haslo = haslo;
+    }
+    private  void saveToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getFileName()))) {
+            oos.writeObject(listapracownikow);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void readFromFile() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFileName()))) {
+            this.listapracownikow = (List<Pracownik>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            listapracownikow = new ArrayList<>();
+        }catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    private static String getFileName() {
+        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\pracownicybaza.bin";
     }
 }

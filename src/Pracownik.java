@@ -1,31 +1,31 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
-abstract class Pracownik implements Comparable<Pracownik> {
-    private static int counter =1;
-    private int ID;
+abstract class Pracownik implements Comparable<Pracownik>, Serializable {
+    private logowanie log;
     private String name;
     private String surrname;
-    private LocalDate birthdate;
+    private String birthdate;
     private DzialPraco dzial;
     static List<Pracownik> listapracownikow = new ArrayList<>();
-    public Pracownik(String name, String surrname, LocalDate birth, DzialPraco dzial){
-        this.ID = counter++;
-        this.name=name;
-        this.surrname=surrname;
-        this.birthdate=birth;
-        this.dzial=dzial;
+
+    public Pracownik(){
+
+    }
+
+    public Pracownik(String name, String surrname, String birth, DzialPraco dzial) {
+        this.name = name;
+        this.surrname = surrname;
+        this.birthdate = birth;
+        this.dzial = dzial;
         listapracownikow.add(this);
+        Collections.sort(listapracownikow);
         dzial.getListaPracownikow().add(this);
     }
 
     @Override
     public String toString() {
-        return this.name + " " + this.surrname+ " " + this.dzial;
+        return this.name + " " + this.surrname;
     }
 
     public String getName() {
@@ -44,17 +44,34 @@ abstract class Pracownik implements Comparable<Pracownik> {
         this.surrname = surrname;
     }
 
-    @Override
-    public int compareTo(Pracownik o) {
-        int imie = this.name.compareTo(o.name);
-            if (imie != 0){
-                return imie;
-        }else{
-            return this.birthdate.compareTo(o.birthdate);
+    public static boolean znajdzUzytkownika(String login, String password) {
+        for (Pracownik pracownik : listapracownikow) {
+            if (pracownik instanceof Uzytkownik)
+                if (((Uzytkownik) pracownik).getLogin().equals(login) &&
+                        ((Uzytkownik) pracownik).getHaslo().equals(password)) {
+                    logowanie.setPracownik(pracownik);
+                    return true;
+                }
+            if (pracownik instanceof Brygadzista)
+                if (((Brygadzista) pracownik).getLogin().equals(login) &&
+                        ((Brygadzista) pracownik).getHaslo().equals(password)) {
+                    logowanie.setPracownik(pracownik);
+                    return true;
+                }
         }
+        return false;
     }
 
-    public int getID() {
-        return ID;
+    @Override
+    public int compareTo(Pracownik o) {
+        return this.name.compareTo(o.name);
     }
+
+    public static String isInstanceofUzytkownik(Pracownik pracownik) {
+        if (pracownik instanceof Uzytkownik) {
+            return "Uzytkownik";
+        } else
+            return "Brygadzista";
+    }
+
 }
