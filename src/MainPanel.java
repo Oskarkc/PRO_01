@@ -43,9 +43,10 @@ public class MainPanel extends JPanel {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Imię i Nazwisko");
         model.addColumn("Stopien");
+        pracownicy.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         Collections.sort(Pracownik.listapracownikow);
         for (Pracownik pracownik : Pracownik.listapracownikow){
-            model.addRow(new Object[]{pracownik,Pracownik.isInstanceofUzytkownik(pracownik)});
+            model.addRow(new Object[]{pracownik,pracownik.getClass().getSimpleName()});
         }
         pracownicy.setModel(model);
         pracownicy.getColumnModel().getColumn(0).setPreferredWidth(400);
@@ -55,6 +56,7 @@ public class MainPanel extends JPanel {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Nazwa Dzialu");
         Collections.sort(DzialPraco.dzialy2);
+        dzialy.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         for(DzialPraco nazwa : DzialPraco.dzialy2){
             model.addRow(new Object[]{nazwa});
         }

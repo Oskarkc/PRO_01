@@ -13,6 +13,8 @@ public class Menu extends JMenu {
     JButton usun = new JButton("Usun");
     Pracownik pracownik;
     ZmianaHaslaDialog zmianaNazwyDialog;
+    DzialPraco bazadzialow=new DzialPraco();
+    Uzytkownik pracownibaza = new Uzytkownik();
 
     public Menu(Pracownik pracownik) {
         this.pracownik = pracownik;
@@ -51,38 +53,47 @@ public class Menu extends JMenu {
         });
         lowerPanel.add(edytuj);
         usun.addActionListener(e-> {
-            if(MainPanel.isInDzialy)
-                if(MainPanel.dzialy.getSelectedRow() != -1) {
+            if(MainPanel.isInDzialy) {
+                int[] selectedRows = MainPanel.dzialy.getSelectedRows();
+                if (MainPanel.dzialy.getSelectedRow() != -1) {
                     int i = JOptionPane.showConfirmDialog(null, "Czy jestes pewny?", "Potwierdzenie", JOptionPane.YES_NO_OPTION);
-                    if(i== JOptionPane.YES_OPTION) {
-                        removeForDzialy();
+                    if (i == JOptionPane.YES_OPTION) {
+                        for (int row : selectedRows) {
+                            removeForDzialy(row);
+                        }
                     }
                 }
-            if(MainPanel.isInPracownicy)
-                if(MainPanel.pracownicy.getSelectedRow() != -1) {
+            }
+            if(MainPanel.isInPracownicy) {
+                int[] selectedRows = MainPanel.pracownicy.getSelectedRows();
+                if (MainPanel.pracownicy.getSelectedRow() != -1) {
                     int i = JOptionPane.showConfirmDialog(null, "Czy jestes pewny?", "Potwierdzenie", JOptionPane.YES_NO_OPTION);
-                    if(i== JOptionPane.YES_OPTION) {
-                        removeForPracownicy();
+                    if (i == JOptionPane.YES_OPTION) {
+                        for (int row : selectedRows) {
+                            removeForPracownicy(row);
+                        }
                     }
                 }
+            }
+            bazadzialow.saveToFile();
         });
         lowerPanel.add(usun);
         upperPanel.add(lowerPanel, BorderLayout.CENTER);
     }
-    private void removeForDzialy() {
-        DzialPraco.getDzialy().remove(MainPanel.dzialy.getSelectedRow());
-        ((DefaultTableModel) MainPanel.dzialy.getModel()).removeRow(MainPanel.dzialy.getSelectedRow());
+    private void removeForDzialy(int row) {
+        DzialPraco.getDzialy().remove(row);
+        ((DefaultTableModel) MainPanel.dzialy.getModel()).removeRow(row);
+
         MainPanel.dzialy.revalidate();
         MainPanel.dzialy.repaint();
     }
-    private void removeForPracownicy() {
-        int row = MainPanel.pracownicy.getSelectedRow();
+    private void removeForPracownicy(int row) {
         if(pracownik == MainPanel.pracownicy.getValueAt(row,0)){
             JOptionPane.showMessageDialog(null, "Probujesz usunac swoje konto!");
             return;
         }
-        Pracownik.listapracownikow.remove(MainPanel.pracownicy.getValueAt(MainPanel.pracownicy.getSelectedRow(), 0));
-        ((DefaultTableModel) MainPanel.pracownicy.getModel()).removeRow(MainPanel.pracownicy.getSelectedRow());
+        Pracownik.listapracownikow.remove(MainPanel.pracownicy.getValueAt(row, 0));
+        ((DefaultTableModel) MainPanel.pracownicy.getModel()).removeRow(row);
         MainPanel.pracownicy.revalidate();
         MainPanel.pracownicy.repaint();
     }

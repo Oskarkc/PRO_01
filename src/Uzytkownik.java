@@ -61,7 +61,7 @@ public class Uzytkownik extends Pracownik implements Serializable {
     public void setHaslo(String haslo) {
         this.haslo = haslo;
     }
-    private  void saveToFile() {
+    public void saveToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getFileName()))) {
             oos.writeObject(listapracownikow);
         } catch (Exception e) {
@@ -79,6 +79,6 @@ public class Uzytkownik extends Pracownik implements Serializable {
         }
     }
     private static String getFileName() {
-        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\pracownicybaza.bin";
+        return "/Users/oskarkoc/IdeaProjects/PRO_01/src/pracownicybaza.bin";
     }
 }

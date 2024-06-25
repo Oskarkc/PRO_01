@@ -45,8 +45,8 @@ public class DzialPraco implements Comparable<DzialPraco>,Serializable {
         return nazwa;
     }
 
-    public static List<String> getDzialy() {
-        return dzialy;
+    public static List<DzialPraco> getDzialy() {
+        return dzialy2;
     }
     public int compareTo(DzialPraco o) {
         return this.nazwa.compareTo(o.nazwa);
@@ -55,7 +55,7 @@ public class DzialPraco implements Comparable<DzialPraco>,Serializable {
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
     }
-    private  void saveToFile() {
+    public void saveToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getFileName()))) {
             oos.writeObject(dzialy2);
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class DzialPraco implements Comparable<DzialPraco>,Serializable {
         }
     }
     private static String getFileName() {
-        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\dzialybaza.bin";
+        return "/Users/oskarkoc/IdeaProjects/PRO_01/src/dzialybaza.bin";
     }
     private void readFromFile() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFileName()))) {

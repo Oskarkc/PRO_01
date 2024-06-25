@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         DzialPraco baza = new DzialPraco();
         Uzytkownik bazaa = new Uzytkownik();
+
         new logowanie();
     }
 }
