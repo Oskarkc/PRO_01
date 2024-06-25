@@ -10,11 +10,15 @@ public class MainPanel extends JPanel {
     MyJframe myJframe;
     static boolean isInDzialy = false;
     static boolean isInPracownicy = false;
+    static boolean isInBrygady = false;
+    static boolean isInZlecenia = false;
     JPanel all = new JPanel();
     JPanel leftpanel = new JPanel();
     JPanel centerPanel = new JPanel();
      static JTable pracownicy = new JTable();
     static JTable dzialy = new JTable();
+    static JTable brygady = new JTable();
+    static JTable zlecenia = new JTable();
     JButton dzial = new JButton("Dzial");
     JButton uzytkownik = new JButton("Uzytkownik");
     JButton brygadzista = new JButton("Brygadzista");
@@ -26,6 +30,8 @@ public class MainPanel extends JPanel {
         this.setLayout(new BorderLayout());
         setconfigPracownicy();
         setconfigDzial();
+        setconfigZlecenia();
+        setconfigBrygada();
         configLeftPanel();
         all.setLayout(new BorderLayout());
         all.add(leftpanel, BorderLayout.WEST);
@@ -37,6 +43,20 @@ public class MainPanel extends JPanel {
                 new ShowListDzialDialog(myJframe,(DzialPraco) dzialy.getValueAt(dzialy.rowAtPoint(e.getPoint()),0));
             }
         });
+        brygady.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                new ShowListBryg(myJframe,(Brygada) brygady.getValueAt(brygady.rowAtPoint(e.getPoint()),0));
+            }
+        });
+        zlecenia.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Zlecenie zlecenie1=((Zlecenie) zlecenia.getValueAt(zlecenia.rowAtPoint(e.getPoint()),zlecenia.columnAtPoint(e.getPoint())));
+                if(zlecenie1.prace==null){
+                    JOptionPane.showMessageDialog(null,"Brak prac w zleceniu!");
+                    return;
+                }
+                        new ShowListPracDialog(myJframe,zlecenie1);
+            }});
     }
 
     public static void setconfigPracownicy() {
@@ -65,13 +85,29 @@ public class MainPanel extends JPanel {
         dzialy.setDefaultEditor(Object.class,null);
     }
     public static void setconfigBrygada(){
-
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nazwa Brygady");
+        for (Brygada bryg : Brygada.brygady){
+            model.addRow(new Object[]{bryg});
+        }
+        brygady.setModel(model);
+        brygady.getColumnModel().getColumn(0).setPreferredWidth(400);
+        brygady.setDefaultEditor(Object.class,null);
     }
     public static void setconfigBrygadzista(){
 
     }
     public static void setconfigZlecenia(){
-
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Data Utworzenia");
+        model.addColumn("Numer Zlecenia");
+        model.addColumn("Status");
+        for (Zlecenie zlec : Zlecenie.zlecenia){
+            model.addRow(new Object[]{zlec.getDataUtworzenia(),zlec,zlec.getCurrentstatus(),zlec.getDataZakonczenia()});
+        }
+        zlecenia.setModel(model);
+        zlecenia.getColumnModel().getColumn(0).setPreferredWidth(400);
+        zlecenia.setDefaultEditor(Object.class,null);
     }
     public static void setconfigPraca(){
 
@@ -79,6 +115,8 @@ public class MainPanel extends JPanel {
     public void switcher(){
         isInDzialy = false;
         isInPracownicy = false;
+        isInBrygady = false;
+        isInZlecenia = false;
     }
     public void configLeftPanel(){
         centerPanel.setLayout(new FlowLayout());
@@ -103,7 +141,23 @@ public class MainPanel extends JPanel {
         });
         leftpanel.add(brygadzista);
         leftpanel.add(brygada);
+        brygada.addActionListener(e -> {
+            switcher();
+            isInBrygady = true;
+            centerPanel.removeAll();
+            centerPanel.add(new JScrollPane(brygady));
+            revalidate();
+            repaint();
+        });
         leftpanel.add(zlecenie);
+        zlecenie.addActionListener(e -> {
+            switcher();
+            isInZlecenia = true;
+            centerPanel.removeAll();
+            centerPanel.add(new JScrollPane(zlecenia));
+            revalidate();
+            repaint();
+        });
         leftpanel.add(praca);
         leftpanel.add(wyloguj);
     }

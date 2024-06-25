@@ -1,3 +1,4 @@
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,22 +8,29 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class Zlecenie implements Runnable {
+public class Zlecenie implements Runnable, Serializable {
     private static int zlecenie = 1;
-    final private String numerzlecenia;
+    private String numerzlecenia;
     private Status currentstatus;
     private LocalDateTime DataUtworzenia;
     private LocalDateTime dataRozpoczecia;
     private LocalDateTime dataZakonczenia;
-    final private Rodzajzlecenia IsPlanned;
+    private Rodzajzlecenia IsPlanned;
     private Brygada brygada;
-    private List<Praca> prace;
+    public List<Praca> prace;
+    static List<Zlecenie> zlecenia = new ArrayList<>();
+
+    public Zlecenie() {
+        readFromFile();
+    }
 
     public Zlecenie(boolean IsPlanned) {
         this.currentstatus = Status.UTWORZONE;
         this.DataUtworzenia = LocalDateTime.now();
         this.IsPlanned = IsPlanned ? Rodzajzlecenia.PLANOWANE : Rodzajzlecenia.NIEPLANOWANE;
         this.numerzlecenia = SetNrZlecenia();
+        zlecenia.add(this);
+        saveToFile();
     }
 
     public Zlecenie(boolean IsPlanned, Brygada brygada) {
@@ -69,7 +77,7 @@ public class Zlecenie implements Runnable {
 
     @Override
     public String toString() {
-        return numerzlecenia + " " + this.currentstatus;
+        return numerzlecenia ;
     }
 
     @Override
@@ -90,5 +98,35 @@ public class Zlecenie implements Runnable {
         System.out.println("Zlecenie wykonane");
         this.dataZakonczenia = LocalDateTime.now();
 
+    }
+    public Status getCurrentstatus() {
+        return currentstatus;
+    }
+    public String getDataZakonczenia() {
+        if(dataZakonczenia == null) {
+            return "";
+        }
+        return dataZakonczenia.toString();
+    }
+    private static String getFileName() {
+        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\zleceniabaza.bin";
+    }
+    private void readFromFile() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFileName()))) {
+            this.zlecenia = (List<Zlecenie>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            zlecenia = new ArrayList<>();
+
+        }catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void saveToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getFileName()))) {
+            oos.writeObject(this.zlecenia);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -74,4 +74,7 @@ abstract class Pracownik implements Comparable<Pracownik>, Serializable {
             return "Brygadzista";
     }
 
+    public void setDzial(DzialPraco dzial) {
+        this.dzial = dzial;
+    }
 }

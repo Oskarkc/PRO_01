@@ -63,7 +63,7 @@ public class DzialPraco implements Comparable<DzialPraco>,Serializable {
         }
     }
     private static String getFileName() {
-        return "/Users/oskarkoc/IdeaProjects/PRO_01/src/dzialybaza.bin";
+        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\dzialybaza.bin";
     }
     private void readFromFile() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFileName()))) {

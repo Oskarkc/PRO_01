@@ -79,6 +79,6 @@ public class Uzytkownik extends Pracownik implements Serializable {
         }
     }
     private static String getFileName() {
-        return "/Users/oskarkoc/IdeaProjects/PRO_01/src/pracownicybaza.bin";
+        return "C:\\Users\\oskik\\IdeaProjects\\PRO_01\\src\\pracownicybaza.bin";
     }
 }

@@ -44,7 +44,7 @@ public class Menu extends JMenu {
         edytuj.addActionListener(e->{
             if(MainPanel.isInPracownicy){
                 if(MainPanel.pracownicy.getSelectedRow() != -1);
-
+                    new EdyPracDialog(myframe,(Pracownik) MainPanel.pracownicy.getValueAt(MainPanel.pracownicy.getSelectedRow(), 0));
             }else if (MainPanel.isInDzialy)
                 if(MainPanel.dzialy.getSelectedRow() != -1) {
                     int row = MainPanel.dzialy.getSelectedRow();
@@ -76,6 +76,7 @@ public class Menu extends JMenu {
                 }
             }
             bazadzialow.saveToFile();
+            pracownibaza.saveToFile();
         });
         lowerPanel.add(usun);
         upperPanel.add(lowerPanel, BorderLayout.CENTER);
@@ -88,7 +89,7 @@ public class Menu extends JMenu {
         MainPanel.dzialy.repaint();
     }
     private void removeForPracownicy(int row) {
-        if(pracownik == MainPanel.pracownicy.getValueAt(row,0)){
+        if(pracownik.equals(MainPanel.pracownicy.getValueAt(row,0))){
             JOptionPane.showMessageDialog(null, "Probujesz usunac swoje konto!");
             return;
         }
