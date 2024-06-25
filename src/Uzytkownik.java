@@ -14,7 +14,7 @@ public class Uzytkownik extends Pracownik{
 
     @Override
     public String toString() {
-        return super.toString()+ " " + this.Init;
+        return super.toString();
     }
 
     @Override
@@ -40,5 +40,16 @@ public class Uzytkownik extends Pracownik{
 
     public String getInit() {
         return (String)Init;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+    public String getHaslo() {
+        return haslo;
+    }
+
+    public void setHaslo(String haslo) {
+        this.haslo = haslo;
     }
 }

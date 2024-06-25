@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-abstract class Pracownik{
+abstract class Pracownik implements Comparable<Pracownik> {
+    private logowanie log;
     private String name;
     private String surrname;
     private String birthdate;
@@ -15,12 +13,13 @@ abstract class Pracownik{
         this.birthdate=birth;
         this.dzial=dzial;
         listapracownikow.add(this);
+        Collections.sort(listapracownikow);
         dzial.getListaPracownikow().add(this);
     }
 
     @Override
     public String toString() {
-        return this.name + " " + this.surrname + this.dzial;
+        return this.name + " " + this.surrname ;
     }
 
     public String getName() {
@@ -37,5 +36,27 @@ abstract class Pracownik{
 
     public void setSurrname(String surrname) {
         this.surrname = surrname;
+    }
+    public static boolean znajdzUzytkownika(String login , String password){
+        for(Pracownik pracownik : listapracownikow){
+            if(pracownik instanceof Uzytkownik)
+                if(((Uzytkownik) pracownik).getLogin().equals(login) &&
+                        ((Uzytkownik) pracownik).getHaslo().equals(password)) {
+                    logowanie.setPracownik(pracownik);
+                    return true;
+                }
+            if(pracownik instanceof Brygadzista)
+                if (((Brygadzista) pracownik).getLogin().equals(login) &&
+                        ((Brygadzista) pracownik).getHaslo().equals(password)) {
+                    logowanie.setPracownik(pracownik);
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(Pracownik o) {
+        return this.name.compareTo(o.name);
     }
 }
